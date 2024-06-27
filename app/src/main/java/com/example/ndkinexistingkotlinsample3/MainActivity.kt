@@ -1,6 +1,7 @@
 package com.example.ndkinexistingkotlinsample3
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -18,6 +19,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        jniData = stringFromJNI()
+        Log.d("mvv"," stringFromJNI  $jniData")
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -54,5 +58,21 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    /**
+     * A native method that is implemented by the 'nativecsample' native library,
+     * which is packaged with this application.
+     */
+    external fun stringFromJNI(): String
+
+    var jniData = ""
+
+    companion object {
+        // Used to load the 'nativecsample' library on application startup.
+        init {
+            System.loadLibrary("jni-project-name")
+
+        }
     }
 }
